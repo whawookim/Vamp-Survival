@@ -18,4 +18,10 @@ public interface IEnemyView
 
     /// <summary>이동 방향을 전달해 스프라이트 방향 전환 등에 사용한다.</summary>
     void SetMoveDirection(Vector2 direction);
+
+    /// <summary>
+    /// EnemyType에 따른 색상과 스케일을 적용한다. (Phase 2 추가)
+    /// Initialize() 호출 시 EnemyController가 전달한다.
+    /// </summary>
+    void SetAppearance(Color color, float scale);
 }
