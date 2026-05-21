@@ -13,11 +13,11 @@ using UnityEngine;
 /// </summary>
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private float _spawnInterval     = 2f;
-    [SerializeField] private float _spawnRadius       = 12f;
-    [SerializeField] private int   _spawnCountPerWave = 3;
-    [SerializeField] private int   _maxEnemyCount     = 50;
-    [SerializeField] private string _enemyPoolKey     = "Enemy";
+    [SerializeField] private float _spawnInterval = 2f;
+    [SerializeField] private float _spawnRadius = 12f;
+    [SerializeField] private int _spawnCountPerWave = 3;
+    [SerializeField] private int _maxEnemyCount = 50;
+    [SerializeField] private string _enemyPoolKey = "Enemy";
 
     private Transform _playerTransform;
     private int _enemyLayerMask;
@@ -65,7 +65,7 @@ public class EnemySpawner : MonoBehaviour
 
         for (int i = 0; i < _spawnCountPerWave; i++)
         {
-            float angle    = Random.Range(0f, Mathf.PI * 2f);
+            float angle = Random.Range(0f, Mathf.PI * 2f);
             Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * _spawnRadius;
             Vector3 spawnPos = _playerTransform.position + (Vector3)offset;
 

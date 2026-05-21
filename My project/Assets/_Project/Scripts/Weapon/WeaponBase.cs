@@ -11,14 +11,14 @@ using UnityEngine;
 /// </summary>
 public abstract class WeaponBase : MonoBehaviour, IWeapon
 {
-    [SerializeField] protected int   _damage          = 10;
-    [SerializeField] protected float _attackInterval  = 1f;
+    [SerializeField] protected int _damage = 10;
+    [SerializeField] protected float _attackInterval = 1f;
 
     public float AttackInterval => _attackInterval;
 
     /// <summary>무기를 발동한다. 구체적인 로직은 자식 클래스에서 구현한다.</summary>
     public abstract void Fire(Transform origin, EnemyController target);
 
-    public void SetDamage(int damage)          => _damage         = damage;
+    public void SetDamage(int damage) => _damage = damage;
     public void SetAttackInterval(float value) => _attackInterval = value;
 }
