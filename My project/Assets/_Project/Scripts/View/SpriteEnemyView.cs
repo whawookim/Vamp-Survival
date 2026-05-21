@@ -13,7 +13,7 @@ using UnityEngine;
 public class SpriteEnemyView : MonoBehaviour, IEnemyView
 {
     [SerializeField] private Color _damageFlashColor = Color.white;
-    [SerializeField] private float _flashDuration    = 0.1f;
+    [SerializeField] private float _flashDuration = 0.1f;
 
     private SpriteRenderer _spriteRenderer;
 

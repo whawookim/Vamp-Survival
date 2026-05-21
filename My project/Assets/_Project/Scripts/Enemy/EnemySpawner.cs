@@ -13,14 +13,17 @@ using UnityEngine;
 /// </summary>
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private float _spawnInterval     = 2f;
-    [SerializeField] private float _spawnRadius       = 12f;
-    [SerializeField] private int   _spawnCountPerWave = 3;
-    [SerializeField] private int   _maxEnemyCount     = 50;
-    [SerializeField] private string _enemyPoolKey     = "Enemy";
+    [SerializeField] private float _spawnInterval = 2f;
+    [SerializeField] private float _spawnRadius = 12f;
+    [SerializeField] private int _spawnCountPerWave = 3;
+    [SerializeField] private int _maxEnemyCount = 50;
+    [SerializeField] private string _enemyPoolKey = "Enemy";
 
     private Transform _playerTransform;
     private int _enemyLayerMask;
+    
+    private Collider2D[] _enemyCountBuffer;
+    private ContactFilter2D _enemyContactFilter;
 
     private void Start()
     {
@@ -29,6 +32,15 @@ public class EnemySpawner : MonoBehaviour
             _playerTransform = player.transform;
 
         _enemyLayerMask = LayerMask.GetMask("Enemy");
+        
+        _enemyCountBuffer = new Collider2D[_maxEnemyCount];
+        _enemyContactFilter = new ContactFilter2D
+        {
+            useLayerMask = true,
+            layerMask = _enemyLayerMask,
+            useTriggers = true
+        };
+        
         StartCoroutine(SpawnRoutine());
     }
 
@@ -46,15 +58,14 @@ public class EnemySpawner : MonoBehaviour
         if (_playerTransform == null) return;
 
         // 현재 활성 Enemy 수가 최대치를 넘으면 스킵
-        int activeCount = Physics2D.OverlapCircleNonAlloc(
-            _playerTransform.position, _spawnRadius * 3f,
-            new Collider2D[_maxEnemyCount], _enemyLayerMask);
+        int activeCount = Physics2D.OverlapCircle(_playerTransform.position,
+            _spawnRadius * 3f, _enemyContactFilter, _enemyCountBuffer);
 
         if (activeCount >= _maxEnemyCount) return;
 
         for (int i = 0; i < _spawnCountPerWave; i++)
         {
-            float angle    = Random.Range(0f, Mathf.PI * 2f);
+            float angle = Random.Range(0f, Mathf.PI * 2f);
             Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * _spawnRadius;
             Vector3 spawnPos = _playerTransform.position + (Vector3)offset;
 
