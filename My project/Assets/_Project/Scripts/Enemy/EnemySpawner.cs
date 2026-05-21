@@ -21,6 +21,9 @@ public class EnemySpawner : MonoBehaviour
 
     private Transform _playerTransform;
     private int _enemyLayerMask;
+    
+    private Collider2D[] _enemyCountBuffer;
+    private ContactFilter2D _enemyContactFilter;
 
     private void Start()
     {
@@ -29,6 +32,15 @@ public class EnemySpawner : MonoBehaviour
             _playerTransform = player.transform;
 
         _enemyLayerMask = LayerMask.GetMask("Enemy");
+        
+        _enemyCountBuffer = new Collider2D[_maxEnemyCount];
+        _enemyContactFilter = new ContactFilter2D
+        {
+            useLayerMask = true,
+            layerMask = _enemyLayerMask,
+            useTriggers = true
+        };
+        
         StartCoroutine(SpawnRoutine());
     }
 
@@ -46,9 +58,8 @@ public class EnemySpawner : MonoBehaviour
         if (_playerTransform == null) return;
 
         // 현재 활성 Enemy 수가 최대치를 넘으면 스킵
-        int activeCount = Physics2D.OverlapCircleNonAlloc(
-            _playerTransform.position, _spawnRadius * 3f,
-            new Collider2D[_maxEnemyCount], _enemyLayerMask);
+        int activeCount = Physics2D.OverlapCircle(_playerTransform.position,
+            _spawnRadius * 3f, _enemyContactFilter, _enemyCountBuffer);
 
         if (activeCount >= _maxEnemyCount) return;
 
