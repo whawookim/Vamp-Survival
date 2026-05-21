@@ -94,14 +94,14 @@ public class EnemyController : MonoBehaviour
             Die();
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnTriggerStay2D(Collider2D other)
     {
         if (_isDead) return;
-        if (!collision.gameObject.CompareTag("Player")) return;
+        if (!other.gameObject.CompareTag("Player")) return;
         if (Time.time - _lastContactDamageTime < _contactDamageInterval) return;
 
         _lastContactDamageTime = Time.time;
-        if (collision.gameObject.TryGetComponent<PlayerHealth>(out var health))
+        if (other.gameObject.TryGetComponent<PlayerHealth>(out var health))
             health.TakeDamage(_contactDamage);
     }
 
